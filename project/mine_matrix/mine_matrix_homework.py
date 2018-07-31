@@ -128,6 +128,7 @@ def main():
         i, j = get_row_and_column(int(user_input))
         # print('i', i, 'j', j)
         #i, j를 인자로 받고, 주변 지뢰 갯수를 찾는 mine_counter() 실행
+        #입력값의 위치가 지뢰인 경우 mine_count에 *이 들어감
         mine_count = mine_counter(i, j)
         result_matrix[i][j] = mine_count
 
