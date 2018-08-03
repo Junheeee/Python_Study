@@ -10,7 +10,7 @@ from random import *
 import sys
 import time
 
-matrix_i_length, matrix_j_length = input().split()
+matrix_i_length, matrix_j_length = input("게임판의 크기를 입력하여 주세요. > ").split()
 matrix_i_length, matrix_j_length = int(matrix_i_length), int(matrix_j_length)
 
 mine = matrix_j_length
@@ -83,6 +83,13 @@ def view_matrix():
             print("{0:>2}".format(result_matrix[i][j]), end="")
         print()
 
+# 정답 공개
+def x_matrix():
+    for i in range(matrix_i_length):
+        for j in range(matrix_j_length):
+            print("{0:>2}".format(mine_matrix[i][j]), end="")
+        print()
+
 
 # 입력값이 Q이면 게임을 멈추는 메서드
 def end_game(user_input):
@@ -99,11 +106,10 @@ def get_row_and_column(index):
 
 def found_mine_counter():
     plus_count = 0
-
     for i in range(matrix_i_length):
         for j in range(matrix_j_length):
-            if result_matrix[i][j] == '+':
-                plus_count = plus_count + 1
+            if mine_matrix[i][j] == '*' and result_matrix[i][j] == 'X':
+                plus_count +=1
 
     return plus_count == mine
 
@@ -113,28 +119,36 @@ def main():
 
     while True:
         view_matrix()
-        user_input = input('> ')
+        user_input, why = input('> ').split()
         end_game(user_input)
 
         # print("user_input :", user_input)
         i, j = get_row_and_column(int(user_input))
-        # print('i', i, 'j', j)
-        mine_count = mine_counter(i, j)
-        result_matrix[i][j] = mine_count
+
+        if why == "!":
+            # print('i', i, 'j', j)
+            mine_count = mine_counter(i, j)
+            result_matrix[i][j] = mine_count
+        elif why == "?":
+            mine_count = ''
+            result_matrix[i][j] = "X"
 
         if mine_count == '*':
-            view_matrix()
+            x_matrix()
             print("지뢰를 밟았습니다!")
             end_time = time.time()
             print(int(end_time - start_time), "초 경과")
             sys.exit(0)
 
         if found_mine_counter():
-            view_matrix()
+            x_matrix()
             print("모든 지뢰를 찾았습니다.")
             end_time = time.time()
             print(int(end_time - start_time), "초 경과")
             sys.exit(0)
 
+
+
 if __name__ == '__main__':
     main()
+print('__main__')
